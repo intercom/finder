@@ -1,8 +1,10 @@
-![finder](https://user-images.githubusercontent.com/141232/36463709-381f8c36-16fe-11e8-8fdc-fcbdd4f2a36c.png)
+![finder](https://medv.io/assets/finder.png)
 
 # finder
 
-[![Build Status](https://travis-ci.org/antonmedv/finder.svg?branch=master)](https://travis-ci.org/antonmedv/finder)
+[![npm](https://img.shields.io/npm/v/@medv/finder?color=grightgreen)](https://www.npmjs.com/package/@medv/finder)
+[![Build status](https://img.shields.io/travis/antonmedv/finder)](https://travis-ci.org/antonmedv/finder)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/@medv/finder?label=size)](https://bundlephobia.com/result?p=@medv/finder)
 
 > CSS Selector Generator
 
@@ -11,7 +13,7 @@
 * Generates **shortest** selectors
 * **Unique** selectors per page
 * Stable and **robust** selectors
-* **2.9 kB** gzip and minify size
+* **2.1 kB** gzip and minify size
 
 ## Install
 
@@ -19,10 +21,18 @@
 npm install @medv/finder
 ```
 
+Finder can be used via modules:
+
+```html
+<script type="module">
+  import {finder} from 'https://medv.io/finder/finder.js'
+</script>
+```
+
 ## Usage 
 
 ```js
-import finder from '@medv/finder'
+import {finder} from '@medv/finder'
 
 document.addEventListener('click', event => {
   const selector = finder(event.target)
@@ -47,9 +57,11 @@ const selector = finder(event.target, {
   root: document.body,
   className: (name) => true,
   tagName: (name) => true,
+  attr: (name, value) => false,
   seedMinLength: 1,
   optimizedMinLength: 2,
-  threshold: 1000
+  threshold: 1000,
+  maxNumberOfTries: 10_000,
 })
 ```
 
@@ -81,6 +93,10 @@ const selector = finder(event.target, {
 
 Check if tag name can be used, same as `className`.
 
+#### `attr: (name: string, value: string) => boolean`
+
+Check if attr name can be used.
+
 #### `seedMinLength: number`
 
 Minimum length of levels in fining selector. Starts from `1`. 
@@ -100,19 +116,10 @@ that gives you more than 3k selectors to check.
 `finder` uses two step approach so it's reaching this threshold in some cases twice.
 Default `1000` is good enough in most cases.  
 
-### Comparison with [optimal-select](https://github.com/Autarc/optimal-select)
+#### `maxNumberOfTries: number`
 
-`optimal-select` fails to generate selectors some times, and some times generates not unique selectors.
-`finder` generates shorter selectors than optimal-select. Also optimal-select now does not have tests and we have :)
- 
-For example, on github.com page:
-
-|          | finder | optimal-select |
-|----------|--------|----------------| 
-| fails    | 0      | 42             |
-| shortest | 404    | 38             | 
-| longest  | `.story:nth-child(3) .d-lg-flex:nth-child(2) > .width-full:nth-child(1)` | `[class="circle d-flex flex-column flex-justify-center text-center p-4 mx-auto mt-6 mb-3 m-md-3 bg-orange box-shadow-extra-large"] [class="d-block f0-light text-white lh-condensed-ultra mb-2"]` |
-| size     | 2.9 kB | 4.58 kB        |
+Max number of tries when we do the optimization. It is a trade-off between optimization and efficiency.
+Default `10_000` is good enough in most cases.  
 
 ### Google Chrome Extension
 
@@ -122,4 +129,4 @@ Generate the unique selectors in your browser by using [Chrome Extension](https:
 
 ## License
 
-MIT
+[MIT](LICENSE)

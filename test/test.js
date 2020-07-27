@@ -1,6 +1,6 @@
-import test from 'ava'
-import {readFileSync} from 'fs'
-import check from './helpers/check'
+const test = require('ava')
+const {readFileSync} = require('fs')
+const check = require('./helpers/check')
 
 test('github', t => {
   check(t, readFileSync(__dirname + '/pages/github.com.html', 'utf8'))
@@ -54,4 +54,16 @@ test('config:id', t => {
   </div>
   `
   check(t, html, {idName: id => id !== 'test'})
+})
+
+test('config:attr', t => {
+  const html = `
+  <div data-test="1">
+    <div data-qa="2"></div>
+    <div data-qa="3"></div>
+  </div>
+  `
+  check(t, html, {attr: (name, value) => {
+    return name !== 'data-test' && name === 'data-qa' && value % 2 === 0
+  }})
 })

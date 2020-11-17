@@ -1,6 +1,6 @@
 {
   "name": "@medv/finder",
-  "version": "2.0.0",
+  "version": "2.0.0-intercom.1",
   "description": "CSS Selector Generator",
   "repository": "antonmedv/finder",
   "homepage": "https://github.com/antonmedv/finder",
@@ -20,7 +20,7 @@
   "scripts": {
     "start": "tsc -w",
     "test": "tsc && ava",
-    "prepare": "tsc",
+    "prepare:ts": "tsc",
     "release": "release-it --access public",
     "size": "minify finder.js --sourceType module | gzip-size"
   },
